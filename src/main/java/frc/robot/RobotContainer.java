@@ -13,6 +13,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.PS4Controller.Button;
 import frc.robot.Constants.AutoConstants;
@@ -44,7 +45,6 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-
     // Configure default commands
     m_robotDrive.setDefaultCommand(
         // The left stick controls translation of the robot.
@@ -57,6 +57,32 @@ public class RobotContainer {
                 true),
             m_robotDrive)
     );
+
+    commandLoop();
+  }
+
+  private void commandLoop()
+  {
+    while (DriverStation.isEnabled()) {
+      if (m_driverController.getAButtonPressed())
+      {
+        testCommand();
+      }
+
+      try 
+      {
+        Thread.sleep(50);
+      } catch (InterruptedException e) 
+      {
+        Thread.currentThread().interrupt();
+        return;
+      }
+    }
+  }
+
+  private void testCommand()
+  {
+    DriverStation.reportError("test command", false);
   }
 
   /**
